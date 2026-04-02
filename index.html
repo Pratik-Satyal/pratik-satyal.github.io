@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pratik Satyal — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714;
+    --paper: #f5f0e8;
+    --warm: #c8a87c;
+    --accent: #b85c38;
+    --muted: #8a7e6e;
+    --light: #e8e0d2;
+    --card: #fffbf5;
+    --shadow: rgba(26, 23, 20, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(16px);
+    background: rgba(245, 240, 232, 0.85);
+    border-bottom: 1px solid var(--light);
+    transition: all 0.3s ease;
+  }
+
+  nav .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  nav .logo span { color: var(--accent); }
+
+  nav .nav-links { display: flex; gap: 2rem; }
+
+  nav .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  nav .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+
+  nav .nav-links a:hover { color: var(--ink); }
+  nav .nav-links a:hover::after { width: 100%; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 2rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-content { max-width: 720px; }
+
+  .hero-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .hero-intro {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 540px;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-meta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .hero-meta .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .meta-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .meta-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  /* Decorative element */
+  .hero-deco {
+    position: absolute;
+    right: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    height: 400px;
+    border: 1.5px solid var(--light);
+    border-radius: 2px;
+    opacity: 0;
+    animation: fadeIn 1.2s ease 1s forwards;
+  }
+
+  .hero-deco::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: -20px;
+    bottom: -20px;
+    background: linear-gradient(135deg, var(--warm) 0%, var(--accent) 100%);
+    opacity: 0.08;
+    border-radius: 2px;
+  }
+
+  .hero-deco::after {
+    content: 'PS';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 6rem;
+    font-weight: 700;
+    color: var(--warm);
+    opacity: 0.2;
+  }
+
+  /* ── SECTION LAYOUT ── */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .section-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--light);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .divider hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--warm), transparent);
+  }
+
+  /* ── EXPERIENCE ── */
+  .experience-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .exp-card {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.5rem;
+    padding: 2.5rem;
+    background: var(--card);
+    border: 1px solid var(--light);
+    border-radius: 3px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .exp-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.4s ease;
+  }
+
+  .exp-card:hover::before { height: 100%; }
+  .exp-card:hover { box-shadow: 0 8px 32px var(--shadow); }
+
+  .exp-date {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding-top: 0.3rem;
+  }
+
+  .exp-role {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .exp-org {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .exp-desc {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.75;
+  }
+
+  .exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+  }
+
+  .exp-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    background: var(--paper);
+    border: 1px solid var(--light);
+    border-radius: 2px;
+    color: var(--muted);
+  }
+
+  /* ── WRITING / BLOG ── */
+  .writing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .writing-card {
+    padding: 2rem 2rem 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--light);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+  }
+
+  .writing-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px var(--shadow);
+  }
+
+  .writing-card.featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: linear-gradient(135deg, var(--ink) 0%, #2a2520 100%);
+    color: var(--paper);
+    border: none;
+  }
+
+  .writing-card.featured .wc-category { color: var(--warm); }
+  .writing-card.featured .wc-excerpt { color: rgba(245, 240, 232, 0.65); }
+  .writing-card.featured .wc-meta { color: rgba(245, 240, 232, 0.4); }
+  .writing-card.featured .read-more { color: var(--warm); }
+
+  .wc-category {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .wc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.8rem;
+  }
+
+  .writing-card.featured .wc-title { font-size: 1.7rem; }
+
+  .wc-excerpt {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .wc-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .read-more {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(26, 23, 20, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5rem 2rem;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal-content {
+    background: var(--card);
+    max-width: 720px;
+    width: 100%;
+    border-radius: 4px;
+    padding: 3.5rem;
+    position: relative;
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--muted);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { background: var(--light); color: var(--ink); }
+
+  .modal-category {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-body {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: #444;
+  }
+
+  .modal-body p { margin-bottom: 1.2rem; }
+
+  /* ── EDUCATION ── */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .edu-card {
+    padding: 2rem;
+    background: var(--card);
+    border: 1px solid var(--light);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
+
+  .edu-card:hover { box-shadow: 0 6px 24px var(--shadow); }
+
+  .edu-year {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+  }
+
+  .edu-degree {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-school {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    text-align: center;
+    padding: 6rem 2rem 8rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .contact-section h2 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .contact-text {
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-links a {
+    padding: 0.8rem 1.8rem;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .contact-links .primary-btn {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .contact-links .primary-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .contact-links .secondary-btn {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+
+  .contact-links .secondary-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+    transform: translateY(-2px);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    border-top: 1px solid var(--light);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero-deco { display: none; }
+    .writing-grid { grid-template-columns: 1fr; }
+    .writing-card.featured { grid-template-columns: 1fr; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .exp-card { grid-template-columns: 1fr; gap: 0.5rem; }
+    nav .nav-links { gap: 1rem; }
+    nav .nav-links a { font-size: 0.75rem; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem; }
+    nav .nav-links { gap: 0.75rem; }
+    section { padding: 4rem 1.2rem; }
+    .modal-content { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Pratik <span>Satyal</span></a>
+  <div class="nav-links">
+    <a href="#experience">Experience</a>
+    <a href="#writing">Writing</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-label">Strategic PMO &middot; Researcher &middot; Writer</div>
+    <h1>Systems thinker<br>at the intersection of<br><em>technology & peace</em></h1>
+    <p class="hero-intro">Electrical engineer turned conflict researcher, building scalable governance systems for global organizations. I write about crisis communication, democratic principles, and the invisible forces shaping societies.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Currently</span>
+        <span class="meta-value">WOSM, Geneva</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Based in</span>
+        <span class="meta-value">Kathmandu, Nepal</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Projects Managed</span>
+        <span class="meta-value">130+</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-deco"></div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="experience-grid">
+
+    <div class="exp-card fade-in">
+      <div class="exp-date">Sep 2023 — Present</div>
+      <div>
+        <div class="exp-role">Junior Manager, Grant Management & QA</div>
+        <div class="exp-org">World Organization of Scout Movement (Remote)</div>
+        <div class="exp-desc">Leading the grant lifecycle and technical system architecture for 130+ projects across 5 regional offices. Serving as Fluxx system administrator, designing data validation rules and custom modules while coordinating a $400K+ portfolio with 22 National Scout Organizations.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Fluxx / CRM</span>
+          <span class="exp-tag">Grant Management</span>
+          <span class="exp-tag">Workflow Automation</span>
+          <span class="exp-tag">UNICEF</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card fade-in">
+      <div class="exp-date">Aug 2021 — Aug 2023</div>
+      <div>
+        <div class="exp-role">Project and Partnership Officer</div>
+        <div class="exp-org">Nepal Scouts</div>
+        <div class="exp-desc">Led a 7-member team across all 7 provinces delivering educational projects worth $200K+. Coordinated distribution of 700,000 masks during COVID-19, built partnerships with Denmark Scouts, Finland Guides, UNICEF Nepal, and Nepal Telecom securing $400K+ in funding.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Partnership Development</span>
+          <span class="exp-tag">Team Leadership</span>
+          <span class="exp-tag">COVID-19 Response</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card fade-in">
+      <div class="exp-date">Mar 2019 — Aug 2021</div>
+      <div>
+        <div class="exp-role">IT Assistant</div>
+        <div class="exp-org">NIC Asia Bank Ltd</div>
+        <div class="exp-desc">Coordinated cross-functional teams implementing new financial systems. Provided technical support to the finance team including troubleshooting, process streamlining, and system upgrades. Maintained system documentation libraries for knowledge management.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Financial Systems</span>
+          <span class="exp-tag">Technical Support</span>
+          <span class="exp-tag">Documentation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card fade-in">
+      <div class="exp-date">Sep 2017 — Mar 2019</div>
+      <div>
+        <div class="exp-role">Junior Web Developer</div>
+        <div class="exp-org">Vianet Communication Pvt. Ltd</div>
+        <div class="exp-desc">Developed web-based applications for internal workflows including leave management and financial reporting. Built APIs connecting mobile applications to internal tools and implemented custom 2FA/MFA authentication solutions for enhanced security.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Web Development</span>
+          <span class="exp-tag">API Development</span>
+          <span class="exp-tag">Authentication</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- WRITING -->
+<section id="writing">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2 class="section-title">Writing</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="writing-grid">
+
+    <!-- Featured -->
+    <div class="writing-card featured" onclick="openModal(6)">
+      <div>
+        <div class="wc-category">Personal Essay &middot; Ethnography</div>
+        <div class="wc-title">The Interaction Between Sounds: An Epilogue of a Journey in Tabla</div>
+        <div class="wc-excerpt">Cycling from Sukedhara to Chabahil on a narrow dusty road in the year of 2061, I reached at my Guru's place. Santosh Verma, my tabla teacher around 5 ft tall, dark skin with a big belly in the midst of morning welcomes me to the sound of tabla.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;">
+        <div></div>
+        <div class="wc-meta">
+          <span>Memoir &middot; 9 years of learning</span>
+          <span class="read-more">Read &rarr;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="writing-card" onclick="openModal(0)">
+      <div class="wc-category">Research</div>
+      <div class="wc-title">Crisis Communication & Service Delivery: The Melamchi Flood</div>
+      <div class="wc-excerpt">Exploring the nature of communication in times of crisis through a sociological lens. When formal institutions fail to communicate safety and service delivery, informal institutions take shape where political forces come into play.</div>
+      <div class="wc-meta">
+        <span>2021 &middot; Academic Research</span>
+        <span class="read-more">Read &rarr;</span>
+      </div>
+    </div>
+
+    <div class="writing-card" onclick="openModal(1)">
+      <div class="wc-category">Thesis</div>
+      <div class="wc-title">Hate Speech in Local Level Election 2079 in Nepal</div>
+      <div class="wc-excerpt">Studying the hate speech phenomenon during local elections, examining how language becomes a tool of violence and political campaigning in the age of social media and misinformation.</div>
+      <div class="wc-meta">
+        <span>2022 &middot; Master's Thesis</span>
+        <span class="read-more">Read &rarr;</span>
+      </div>
+    </div>
+
+    <div class="writing-card" onclick="openModal(2)">
+      <div class="wc-category">Co-Authored</div>
+      <div class="wc-title">Virtual Pandemic of Democratic Principles</div>
+      <div class="wc-excerpt">The age of misinformation marks its beginning with a vicious cycle of news being spread through mediums that are not always trusted, right to people who may lack critical thinking to differentiate information.</div>
+      <div class="wc-meta">
+        <span>Essay &middot; Media & Democracy</span>
+        <span class="read-more">Read &rarr;</span>
+      </div>
+    </div>
+
+    <div class="writing-card" onclick="openModal(3)">
+      <div class="wc-category">Commentary</div>
+      <div class="wc-title">Untangling History for Flourishing Democracy at Nepal Scouts</div>
+      <div class="wc-excerpt">After more than 12 years, a nationwide election brings historic democratic practices to the scouting community across all 7 provinces and 753 local units of Nepal.</div>
+      <div class="wc-meta">
+        <span>Nepal Scouts &middot; Democracy</span>
+        <span class="read-more">Read &rarr;</span>
+      </div>
+    </div>
+
+    <div class="writing-card" onclick="openModal(4)">
+      <div class="wc-category">Co-Authored</div>
+      <div class="wc-title">Reinvigorating Peace Through Sports</div>
+      <div class="wc-excerpt">Peacebuilding demands carefully curated policies — the United Nations has recognized sports as an important contributor for peace and development, articulated through the 17 Sustainable Development Goals.</div>
+      <div class="wc-meta">
+        <span>Peacebuilding &middot; SDGs</span>
+        <span class="read-more">Read &rarr;</span>
+      </div>
+    </div>
+
+    <div class="writing-card" onclick="openModal(5)">
+      <div class="wc-category">Research &middot; Grounded Theory</div>
+      <div class="wc-title">Political Economy of Trade & Transit Through Potato Trading</div>
+      <div class="wc-excerpt">Following the potato truck from Bhairahawa to Kalimati to understand the invisible forces that bring food to the dinner table — where rule-based economy meets personal relationship and trust.</div>
+      <div class="wc-meta">
+        <span>Project Capstone &middot; Open Institute</span>
+        <span class="read-more">Read &rarr;</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2 class="section-title">Education</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="edu-grid">
+    <div class="edu-card fade-in">
+      <div class="edu-year">2019 — 2021</div>
+      <div class="edu-degree">Master's in Conflict, Peace & Development Studies</div>
+      <div class="edu-school">Tribhuvan University &middot; GPA 3.71/4</div>
+    </div>
+    <div class="edu-card fade-in">
+      <div class="edu-year">2012 — 2017</div>
+      <div class="edu-degree">B.E. in Electrical & Electronics Engineering</div>
+      <div class="edu-school">Kathmandu University &middot; Communication</div>
+    </div>
+    <div class="edu-card fade-in">
+      <div class="edu-year">2020</div>
+      <div class="edu-degree">Diploma in Writing & Research</div>
+      <div class="edu-school">The Open Institute for Social Science</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <h2>Let's <em>connect</em></h2>
+  <p class="contact-text">Whether it's about grant management systems, peacebuilding research, or just a good conversation over tea — I'd love to hear from you.</p>
+  <div class="contact-links">
+    <a href="mailto:pratiksatyal@gmail.com" class="primary-btn">Send an Email</a>
+    <a href="tel:+9779841202492" class="secondary-btn">Call Me</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  &copy; 2026 Pratik Satyal &middot; Kathmandu, Nepal
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-category" id="modal-cat"></div>
+    <h2 class="modal-title" id="modal-title"></h2>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const articles = [
+  {
+    category: "Research · Melamchi Flood, 2021",
+    title: "A Sociological Dimension of Crisis Communication Affecting Service Delivery",
+    body: `<p>This research explores the nature of communication in times of crisis through a sociological perspective, layering down service delivery patterns during the Melamchi Flood of 2021.</p>
+<p>The research aims to develop the sociological dimension in times of crisis, setting aside the technical details of the causes. Governments become indecisive, confusion grows, and fear looms large. When formal institutions are unable to properly communicate safety and service delivery to residents, informal institutions take shape — and political forces come into play.</p>
+<p>This research particularly explores the formal and informal institutional communication mechanisms and their methods of service delivery during crisis.</p>`
+  },
+  {
+    category: "Master's Thesis · Conflict, Peace & Development Studies",
+    title: "Hate Speech in Local Level Election 2079 in Nepal",
+    body: `<p>Freedom of expression is one of the major traits used to characterize democratic values. Periodic elections, on the other hand, are the fundamental means to ensure democratic practices are carried out.</p>
+<p>With the vast information circulating through social media and traditional news outlets, freedom of expression needs examination. The use of particular language or remarks toward a particular group can become a tool of political campaigning. Creating prejudiced remarks and using language to create division between groups are tools observed during election campaigns.</p>
+<p>This research studies the hate speech phenomenon in local level elections from February 7, 2022 through May 13, 2022. The overall findings suggest there was no direct incident of hate speech in remarks from top political leaders. However, some findings point out calls for mass gatherings leading to violent actions through social media.</p>`
+  },
+  {
+    category: "Co-Authored Essay · Media & Democracy",
+    title: "Virtual Pandemic of Democratic Principles",
+    body: `<p>Access to a broad range of information has fundamentally changed our pattern of news consumption. Had it not been for mass media and technology, the entire process of information delivery would not have evolved much from newspapers and broadcast channels of the late 20th century.</p>
+<p>Instant access to screens and the latest headlines define the information system we perceive today. While the flow of information becomes more convenient and reachable, the platforms in the virtual world usually depend upon views, comments, reactions, and various types of numerical data.</p>
+<p>The need to get better responses through virtual platforms leads individuals to create attractive content, exposing society to the dangers of "fake news." The age of misinformation marks its beginning with a vicious cycle of news — both good and bad — being spread through mediums that are not always trusted, reaching people who may lack the critical thinking to differentiate information based on its authenticity.</p>`
+  },
+  {
+    category: "Commentary · Nepal Scouts",
+    title: "Untangling History for Flourishing Democracy at Nepal Scouts",
+    body: `<p>After more than 12 years, a nationwide election will be held in two phases — Magh 22 and Magh 27, 2080. This will be a historic election in the history of Nepal Scouts, held in line with the federal administration of the country.</p>
+<p>We are witnessing the election in all 7 provinces and 753 local units — a push through democratic practices for young people alike.</p>
+<p>Under the Ministry of Youth and Sports, Nepal Scouts board will be endorsed by the Honorable Minister and will set the helm for the committee for the next 4 years. A big achievement for the ongoing ministry panel and members of Nepal Scouts, in the midst of all the ad-hoc committees formed and the polarized scouting community at the grassroot.</p>
+<p>The election is set to bring the community together and map a prosperous future — the most noble path any institution wants to set.</p>`
+  },
+  {
+    category: "Co-Authored · Peacebuilding & SDGs",
+    title: "Reinvigorating Peace Through Sports",
+    body: `<p>Peacebuilding is a complex phenomenon encompassing different actors and means to achieve sustained peace and development by enhancing national capabilities. The nature of peacebuilding calls for democratic principles to be upheld, making the process multifaceted and complex.</p>
+<p>Peacebuilding demands very carefully curated policies, tailored to suit specific situations, with means of implementation differing on a case-by-case basis.</p>
+<p>Through numerous treaties, Secretary General's reports and other guiding documents, the United Nations has recognized sports as an important contributor for peace and development. The historic adaptation of the 17 Sustainable Development Goals, followed by Sports for Peace and Development, articulated the fact that sports can act as a unique tool for achieving global sustainable development — outlining the potential of sports for the empowerment of women, youths, individuals, and communities.</p>`
+  },
+  {
+    category: "Project Capstone · Grounded Theory",
+    title: "Political Economy of Trade & Transit Through Potato Trading in Nepal",
+    body: `<p>This research follows the potato trade route from Bhairahawa to Kalimati, focusing on four thematic areas: transportation route, custom office, traders, and the distribution point.</p>
+<p>The research tries to understand the invisible forces that help bring the potato — as food — to the dinner table. The researcher follows through the Kalimati trading point by venturing into the potato truck, into the custom house where rule-based economy transactions are created.</p>
+<p>On the other hand, within the custom house, personal relationships take shape where the rule-based transactions are simply the trust and relationship between people. While the paper-based economy is more prominent, the word of mouth is equally important — to negotiate between what goes into the paper institution and what constitutes the trade.</p>`
+  },
+  {
+    category: "Personal Essay · Ethnography",
+    title: "The Interaction Between Sounds: An Epilogue of a Journey in Tabla",
+    body: `<p>Cycling from Sukedhara to Chabahil on a narrow dusty road in the year of 2061, I reached my Guru's place. Santosh Verma, my tabla teacher — around 5 feet tall, dark skin with a big belly — in the midst of morning welcomes me to the sound of tabla.</p>
+<p>At 7 in the morning, my long fingers start to get a sense of the tabla space with the first sound being "Na" from my right hand and "Ghe" from the left side. The sound hums for a moment till my ears hear "Chiya khane haina ta, Pratik" from bhauju, Guru's wife. The black tea in a white ceramic cup with some black pepper and coffee gets the tongue activated.</p>
+<p>With Santosh sir, I remained a student for 9 years. However, I didn't first learn from him. It was from his Guru, Atul Gautam. Around the small alleyway in Ganesthan stood an institution — "Sur Saptak Kala Kendra." Atul Gautam and Sarita Mishra were the ones teaching tabla. As my memory goes back, it was a long room with individuals sitting in a semi-circle, practicing their own bits.</p>
+<p>As a child with no family members playing any form of musical instrument, this journey was purely on my mother's love — making sure we (me and my sister) were in good hands when she went back to opening the shoe shop in Boudha. A motherly cause, protecting her children and hoping along the way that they will be good human beings. No aspiration for being a top musician. Her survival instinct kicked in, and I was in a tabla class.</p>`
+  }
+];
+
+function openModal(index) {
+  const a = articles[index];
+  document.getElementById('modal-cat').textContent = a.category;
+  document.getElementById('modal-title').textContent = a.title;
+  document.getElementById('modal-body').innerHTML = a.body;
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// Scroll animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
